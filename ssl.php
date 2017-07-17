@@ -609,6 +609,8 @@ try {
     $db = new PDO("sqlite:{$dbFile}");
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
+    $db->exec('PRAGMA foreign_keys = ON');
+    
     $statement = $db->prepare('SELECT name FROM sqlite_master WHERE type=:type');
     
     $statement->execute([':type'=>'table']);
