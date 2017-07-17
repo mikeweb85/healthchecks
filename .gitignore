@@ -1,0 +1,9 @@
+.settings/**
+.buildpath
+.project
+**.db
+**.orig
+**.old
+**.bck
+**.back
+
