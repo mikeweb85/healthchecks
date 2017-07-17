@@ -1799,11 +1799,15 @@ $klass = ['danger', 'success', 'warning'];
     		</thead>
     		<tbody>
     		<?php if (!empty($endpoints)): ?>
+    		<?php 
+    		  $healthyEndpoints = [];
+    		?>
     		<?php foreach ($endpoints as $endpoint): ?>
     			<tr id="<?php print hash('md5', "endpoint.{$endpoint['endpoint']['id']}"); ?>" style="vertical-align: center;">
     			<?php if (!empty($endpoint['events'])): ?>
     				<td class="text-center">
     				<?php if ($endpoint['events'][0]['event']['result'] == 'valid'): ?>
+    				<?php $healthyEndpoints[] = $endpoint['endpoint']['id']; ?>
     					<span class="label label-success">Valid</span>
     				<?php else: ?>
     					<span class="label label-danger">Invalid</span>
@@ -1842,6 +1846,27 @@ $klass = ['danger', 'success', 'warning'];
     		<?php endif; ?>
     		</tbody>
     	</table>
+    	
+    	<br/><br/>
+    	
+    	<h3>Monitoring</h3>
+    	<p>Use the following information to provide HTTP monitoring for these endpoint(s). A unique hash key will only be provided when all endpoints are healthy.</p>
+    	<div class="well well-sm">
+    		<div class="row">
+    			<div class="col-md-9">
+    				<small><label class="text-muted">URL:</label>&nbsp;<?php print $request->scheme; ?>://<?php print $_SERVER['HTTP_HOST']; ?><?php print $_SERVER['DOCUMENT_URI']; ?></small>
+    			</div>
+    			<div class="col-md-3">
+    			<?php if (isset($healthyEndpoints) && count($healthyEndpoints) == count($endpoints)): ?>
+    				<small><label class="text-muted">Key:</label>&nbsp;<?php print hash('md5', "{$_SERVER['SERVER_NAME']}.Endpoint.All.Pass"); ?></small>
+    			<?php else: ?>
+    				&nbsp;
+    			<?php endif; ?>
+    			</div>
+    		</div>
+    	</div>
+    	
+    	<br/><br/>
     </div>
     
     <?php endif; ?>
